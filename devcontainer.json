@@ -1,0 +1,10 @@
+{
+  "name": "AI 4 EO",
+  "image": "mcr.microsoft.com/vscode/devcontainers/android:latest",
+  "customizations": {
+    "vscode": {
+      "extensions": ["vscjava.vscode-java-pack", "ms-kotlin.vscode-kotlin"]
+    }
+  },
+  "postCreateCommand": "sdkmanager 'platforms;android-33' 'build-tools;33.0.0'"
+}
