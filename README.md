@@ -45,21 +45,6 @@ We chose **Gemma 3N-E2B-it** because of its small size (~2B parameters), efficie
 
 ---
 
-## 📊 Simulated Performance Metrics
-*(Gemma 3N-e2b-it quantized with TFLite delegates on simulated Edge TPU environment)*  
-
-| Metric              | Estimated Value  | Notes |
-|---------------------|------------------|-------|
-| Model Size          | ~9.8 MB          | int4 quantization + pruning |
-| Inference Latency   | 12–18 ms         | per short text response |
-| Throughput          | 50–65/sec        | depends on batch/token length |
-| Memory Footprint    | 190–230 MB       | peak RAM usage |
-| CPU Utilization     | ~30% avg         | on Raspberry Pi 5 with delegate |
-| Power Consumption   | ~1.2W extra      | estimated from Coral benchmarks |
-| Energy Efficiency   | ~92 inferences/J | ~10.9mJ per inference |
-
----
-
 ## 🌍 Why This Matters
 Every child has a voice. For many, this AI may be the **first time they feel heard and guided**.  
 
