@@ -29,10 +29,7 @@ Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.
 ### 🔹 Model Selection
 We chose **Gemma 3N-E2B-it** because of its small size (~2B parameters), efficient mixture-of-experts routing, and suitability for adaptive tasks.
 
-### 🔹 Model Optimization
-- Applied **post-training quantization (int8)** via TensorFlow Lite.  
-- Reduced model size to **~9.8 MB** while keeping acceptable accuracy.  
-- Ensured compatibility with **Edge TPU** and Raspberry Pi devices.
+
 
 ### 🔹 Deployment Compatibility
 - Target devices: **Raspberry Pi 5**, **Coral Dev Board**, and **Google AI Edge SDK** (Android/iOS).  
