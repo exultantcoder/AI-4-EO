@@ -67,9 +67,11 @@ This system can hear them, respond in their local language, and guide them forwa
 - Staying within power and memory limits on small devices.  
 
 ### How We Overcame Them
--  
 - Built an interactive learning module as part of the custom task in the google ai edge gallery app.  
 - Preloaded essential learning modules (STEM, environment, health, ethics).    
 
 ---
 
+# Workflow :
+1. Clone the Google AI edge gallery github repo
+2. Add these four files under the custom task folder and run the interactive module. 
