@@ -63,15 +63,13 @@ This system can hear them, respond in their local language, and guide them forwa
 ---
 
 ## 🤝 Challenges We Faced
-- Running speech recognition offline in noisy environments.  
 - Personalizing content without cloud storage.  
 - Staying within power and memory limits on small devices.  
 
 ### How We Overcame Them
-- Used **quantized models and distillation** for deployment.  
-- Built a **local feedback loop** with short-term memory.  
-- Preloaded essential learning modules (STEM, environment, health, ethics).  
-- Simulated deployment with **TFLite delegates** to estimate latency and energy use.  
+-  
+- Built an interactive learning module as part of the custom task in the google ai edge gallery app.  
+- Preloaded essential learning modules (STEM, environment, health, ethics).    
 
 ---
 
