@@ -36,8 +36,6 @@ import dagger.multibindings.IntoSet
 internal object InteractiveLearningModule  {
   @Provides
   @IntoSet
-  fun provideInteractiveLearningTask(task: InteractiveLearningFirstTask): CustomTask = task{
-    return ExampleCustomTask()
-  }
-  */
+  fun provideInteractiveLearningTask(task: InteractiveLearningFirstTask): CustomTask = task
+  
 }
