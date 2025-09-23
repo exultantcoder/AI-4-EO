@@ -16,10 +16,10 @@ That’s why we built an **personalized interactive learning module**, powered b
 ---
 
 ## 💡 What We Built
-- **An easy user onboarding system to presonalize the learning experience based on the user's interest and choice in language.**
-- **A local learning engine that interacts with the student and adapts questions, difficulty, and encouragement style based on their responses.**  
-- **The user's progress on each module is saved.**
-- **The model interacts with the user in his language of choice both in audio and text.**
+- **An interactive custom task designed to be deployed on the official open source Google AI Edge Gallery repo by Google.**
+- **An offline personalized learning platform that adapts to the user's language and interests specially for those in children in underserved areas.**
+- **TalkToMe option enable the user to chat with the model via image, text and audio , all-in-one tab.**
+- **Better user data management and track of user's progress while learning modules.**
 - **Adaptive feedback loop to train the model based on user's preferences to adapt to the user.** 
 
 Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.  
@@ -33,16 +33,7 @@ Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.
 - **Improve adaptivity** by fine-tuning Gemma with local, private interaction logs.  
 - **Enhance multimodality** with lightweight vision transformers.  
 - **Partner with NGOs** to bring this system to classrooms worldwide.  
-
----
-
-## 🤝 Challenges We Faced
-- Personalizing content without cloud storage.  
-- Staying within power and memory limits on small devices.  
-
-### How We Overcame Them
-- Built an interactive learning module as part of the custom task in the google ai edge gallery app.  
-- Preloaded essential learning modules (STEM, environment, health, ethics).    
+- **Preloaded essential learning modules (STEM, environment, health, ethics).    
 
 ---
 
