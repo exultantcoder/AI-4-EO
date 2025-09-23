@@ -15,129 +15,208 @@
  */
 package com.google.ai.edge.gallery.customtasks.interactivelearning
 
-import android.content.Context
-import android.graphics.Bitmap
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.School
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
-import com.google.ai.edge.gallery.data.ConfigKey
-import com.google.ai.edge.gallery.data.NumberSliderConfig
-import com.google.ai.edge.gallery.data.ValueType
 import com.google.ai.edge.gallery.ui.modelmanager.ModelManagerViewModel
-import com.google.ai.edge.gallery.ui.common.chat.ChatMessage
-import com.google.ai.edge.gallery.ui.common.chat.ChatMessageText
-import com.google.ai.edge.gallery.ui.common.chat.ChatView
-import com.google.ai.edge.gallery.ui.llmchat.LlmChatModelHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-// --- Data & Config Keys ---
-
-/** Holds a chat message bitmap for image responses. */
-data class LearningImage(val bitmap: Bitmap)
-
-/**
- * Configuration key for number of questions per session.
- */
-val INTERACTIVE_LEARNING_CONFIG_QUESTION_COUNT =
-  ConfigKey(id = "question_count", label = "Questions per Session")
-
-/** Configuration options for the task (if any future sliders). */
-val INTERACTIVE_LEARNING_CONFIGS =
-  listOf(
-    NumberSliderConfig(
-      key = INTERACTIVE_LEARNING_CONFIG_QUESTION_COUNT,
-      sliderMin = 1f,
-      sliderMax = 10f,
-      defaultValue = 3f,
-      valueType = ValueType.INT,
-      needReinitialization = true
-    )
-  )
-
-// --- Composable Screen ---
-
-/**
- * Main screen for AI Interactive Learning.
- *
- * Uses the built-in ChatView for streaming multi-modal AI responses (text, images, audio).
- */
 @Composable
-fun AIInteractiveLearningScreen(
-  modelManagerViewModel: ModelManagerViewModel,
-  viewModel: AIInteractiveLearningViewModel = hiltViewModel()
+fun InteractiveLearningScreen(
+    modelManagerViewModel: ModelManagerViewModel,
+    viewModel: InteractiveLearningViewModel = hiltViewModel()
 ) {
-  val context = LocalContext.current
-  val uiState by modelManagerViewModel.uiState.collectAsState()
-  val model = uiState.selectedModel
+    val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val userDataManager = remember { UserDataManager(context) }
 
-  // Stream of chat messages (text & images).
-  val messages by viewModel.messages.collectAsState()
+    // Save progress helper
+    val saveProgress: () -> Unit = { viewModel.saveUserProfile() }
 
-  Column(modifier = Modifier.fillMaxSize()) {
-    // ChatView handles the scrolling list of ChatMessage/Text/Image items.
-    ChatView(
-      task = modelManagerViewModel.getTaskById("ai_interactive_learning")!!,
-      viewModel = viewModel,
-      modelManagerViewModel = modelManagerViewModel,
-      onSendMessage = { model, newMessages ->
-        newMessages.forEach { viewModel.addMessage(model, it) }
-        // If last message is text, trigger AI response.
-        (newMessages.lastOrNull() as? ChatMessageText)?.let { userMsg ->
-          viewModel.generateLearningResponse(model, userMsg.content)
+    Column(modifier = Modifier.padding(16.dp)) {
+        when (uiState.step) {
+            0 -> HomeScreen(
+                userProfile = uiState.userProfile,
+                onContinueLearning = { viewModel.updateStep(7) },
+                onResetProfile = {
+                    viewModel.resetProfile()
+                }
+            )
+            1 -> OnboardingScreen(
+                title = "Which language would you like to use?",
+                value = uiState.languageInput,
+                placeholder = "e.g. English, Español",
+                onValueChange = viewModel::updateLanguage,
+                onNext = {
+                    if (uiState.languageInput.isNotBlank()) viewModel.updateStep(2)
+                }
+            )
+            2 -> OnboardingScreen(
+                title = "Hello! What's your name?",
+                value = uiState.nameInput,
+                placeholder = "Enter your name",
+                onValueChange = viewModel::updateName,
+                onNext = {
+                    if (uiState.nameInput.isNotBlank()) viewModel.updateStep(3)
+                }
+            )
+            3 -> OnboardingScreen(
+                title = "Great, ${uiState.nameInput}. What topic excites you most?",
+                value = uiState.favoriteTopicInput,
+                placeholder = "e.g. Renewable Energy",
+                onValueChange = viewModel::updateFavoriteTopic,
+                onNext = {
+                    if (uiState.favoriteTopicInput.isNotBlank()) viewModel.updateStep(4)
+                }
+            )
+            4 -> OnboardingScreen(
+                title = "Why do you want to learn about ${uiState.favoriteTopicInput}?",
+                value = uiState.motivationInput,
+                placeholder = "Your motivation",
+                onValueChange = viewModel::updateMotivation,
+                onNext = {
+                    if (uiState.motivationInput.isNotBlank()) viewModel.updateStep(5)
+                }
+            )
+            5 -> ConfirmationScreen(
+                userProfile = uiState.userProfile.copy(
+                    language = uiState.languageInput,
+                    name = uiState.nameInput,
+                    favoriteTopic = uiState.favoriteTopicInput,
+                    motivation = uiState.motivationInput
+                ),
+                onConfirm = {
+                    saveProgress()
+                    viewModel.updateStep(6)
+                },
+                onEdit = { viewModel.updateStep(1) }
+            )
+            6 -> InfoScreen(
+                title = "Details saved! Ready to learn!",
+                buttonText = "Start Learning",
+                onButtonClick = {
+                    viewModel.updateStep(7)
+                }
+            )
+            7 -> LearningLevelScreen(
+                onSelectLevel = {
+                    viewModel.updateStep(8)
+                }
+            )
+            8 -> ActivitySelectionScreen(
+                userProfile = uiState.userProfile,
+                onSelectActivity = {
+                    viewModel.updateActivity(it)
+                    viewModel.updateStep(
+                        when (it) {
+                            "Harvest Solar Energy" -> 100
+                            "Harvest Wind Energy" -> 200
+                            "Custom Project" -> 300
+                            "TalkToMe" -> 400
+                            else -> 0
+                        }
+                    )
+                }
+            )
+
+            100 -> SolarIntroScreen { viewModel.updateStep(101) }
+            101 -> QuizScreen(
+                userName = uiState.userProfile.name,
+                quizTitle = "🌞 Solar Quiz",
+                questions = getSolarQuizQuestions(),
+                resetTrigger = 0,
+                onQuizComplete = {
+                    viewModel.setSolarScore(it)
+                    viewModel.updateStep(102)
+                }
+            )
+            102 -> ResultsScreen(
+                userName = uiState.userProfile.name,
+                score = uiState.userProfile.solarScore,
+                messages = mapOf(
+                    100 to "🌟 Perfect! You're a Solar Genius!",
+                    80 to "🎉 Excellent! You're brilliant with solar power!",
+                    70 to "👍 Great job! Keep learning about solar energy!",
+                    0 to "💪 Keep trying! Review and try again!"
+                ),
+                onTryAgain = { viewModel.updateStep(101) },
+                onHome = { viewModel.updateStep(0) }
+            )
+            200 -> WindIntroScreen { viewModel.updateStep(201) }
+            201 -> QuizScreen(
+                userName = uiState.userProfile.name,
+                quizTitle = "💨 Wind Quiz",
+                questions = getWindQuizQuestions(),
+                resetTrigger = 0,
+                onQuizComplete = {
+                    viewModel.setWindScore(it)
+                    viewModel.updateStep(202)
+                }
+            )
+            202 -> ResultsScreen(
+                userName = uiState.userProfile.name,
+                score = uiState.userProfile.windEnergyScore,
+                messages = mapOf(
+                    100 to "🌟 Amazing! You're a Wind Expert!",
+                    80 to "🎉 Fantastic! You understand wind power!",
+                    70 to "👍 Good work! Keep mastering wind energy!",
+                    0 to "💪 Don't give up! Every expert was a beginner."
+                ),
+                onTryAgain = { viewModel.updateStep(201) },
+                onHome = { viewModel.updateStep(0) }
+            )
+            300 -> CustomProjectCreator {
+                viewModel.updateCustomProject(it)
+                viewModel.updateStep(301)
+            }
+            301 -> ProjectLearningScreen(
+                projectName = uiState.customProjectName,
+                onComplete = {
+                    viewModel.setCustomProjectScore((70..100).random())
+                    viewModel.updateStep(302)
+                }
+            )
+            302 -> ResultsScreen(
+                userName = uiState.userProfile.name,
+                score = uiState.userProfile.customProjectScore,
+                messages = mapOf(
+                    90 to "🏆 Outstanding! You're a natural creator!",
+                    70 to "🎉 Great work! Impressive project skills!",
+                    50 to "👍 Good effort! Keep practicing!",
+                    0 to "💪 Keep learning! Every project is a step forward."
+                ),
+                onTryAgain = { viewModel.updateStep(300) },
+                onHome = { viewModel.updateStep(0) },
+            )
+            400 ->  {
+
+            TalkToMeDialog(
+                modelManagerViewModel = modelManagerViewModel,
+                onDismissRequest = {
+                    // Return to activity picker or other step as needed
+                    viewModel.updateStep(8)
+                },
+                modifier = Modifier.fillMaxSize()
+            )
         }
-      },
-      onRunAgainClicked = { model, msg ->
-        if (msg is ChatMessageText) {
-          viewModel.regenerateResponse(model, msg)
         }
-      },
-      onResetSessionClicked = { model ->
-        viewModel.resetLearningSession(model)
-      },
-      onBenchmarkClicked = { _, _, _, _ -> },
-      navigateUp = {}
-    )
-
-    // Footer: loading spinner while AI is processing
-    if (!uiState.isModelInitialized(model)) {
-      Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp)
-      ) {
-        CircularProgressIndicator(
-          modifier = Modifier.size(24.dp),
-          color = MaterialTheme.colorScheme.primary
-        )
-      }
     }
-  }
 }
+// Helper function for language translations
+private fun getLanguageTranslations(language: String): Map<String, String> {
+    return if (language.equals("Español", ignoreCase = true)) {
+        mapOf(
+            "Hands-On" to "Práctico",
+            "Harvest Solar Energy" to "Cosechar Energía Solar",
+            "Harvest Wind Energy" to "Cosechar Energía Eólica",
+            "Custom Project" to "Proyecto Personalizado",
+            "Start Learning" to "Empezar a Aprender"
+        )
+    } else {
+        emptyMap()
+    }
+}
+
