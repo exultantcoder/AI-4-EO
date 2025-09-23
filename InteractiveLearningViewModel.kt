@@ -16,74 +16,114 @@
 package com.google.ai.edge.gallery.customtasks.interactivelearning
 
 import androidx.lifecycle.ViewModel
-import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.google.ai.edge.gallery.ui.common.chat.ChatMessage
+import javax.inject.Inject
 
 /**
- * Holds the UI state for the AI Interactive Learning screen.
- *
- * Tracks:
- * - List of chat messages (text & images)
- * - Current learning phase
- * - Loading status
+ * UI state for Interactive Learning.
  */
-data class AIInteractiveLearningUiState(
-  val messages: List<ChatMessage> = emptyList(),
-  val isLoading: Boolean = false,
-  val currentPhase: LearningPhase = LearningPhase.ONBOARDING,
-  val textColor: Color = Color.Unspecified
+data class InteractiveLearningUiState(
+    val step: Int = 1,
+    val userProfile: UserProfile = UserProfile(),
+    val languageInput: String = "",
+    val nameInput: String = "",
+    val favoriteTopicInput: String = "",
+    val motivationInput: String = "",
+    val chosenActivity: String = "",
+    val customProjectName: String = ""
 )
 
-/** ViewModel for the AI Interactive Learning screen. */
 @HiltViewModel
-class AIInteractiveLearningViewModel @Inject constructor() : ViewModel() {
-  private val _uiState = MutableStateFlow(AIInteractiveLearningUiState())
-  val uiState = _uiState.asStateFlow()
+class InteractiveLearningViewModel @Inject constructor(
+    private val userDataManager: UserDataManager
+) : ViewModel() {
 
-  /** Add a new ChatMessage to the state. */
-  fun addMessage(modelId: String, message: ChatMessage) {
-    _uiState.update { state ->
-      state.copy(messages = state.messages + message)
+    private val _uiState = MutableStateFlow(InteractiveLearningUiState())
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        initializeUser()
     }
-  }
 
-  /** Generate a learning response via LlmChatModelHelper. */
-  fun generateLearningResponse(model: String, input: String) {
-    _uiState.update { it.copy(isLoading = true) }
-    // Call into MediaPipe/LlmChatModelHelper, simplified here
-    // On response:
-    //   addMessage(model, ChatMessageText(...))
-    //   addMessage(model, ChatMessageImage(...)) for image responses
-    _uiState.update { it.copy(isLoading = false) }
-  }
-
-  /** Regenerate the last response for the given message. */
-  fun regenerateResponse(model: String, message: ChatMessage) {
-    // Implementation similar to generateLearningResponse
-  }
-
-  /** Reset the learning session to initial state. */
-  fun resetLearningSession(model: String) {
-    _uiState.update { AIInteractiveLearningUiState() }
-  }
-
-  /** Advance to the next learning phase. */
-  fun nextPhase() {
-    _uiState.update { state ->
-      val next = when (state.currentPhase) {
-        LearningPhase.ONBOARDING -> LearningPhase.TOPIC_SELECTION
-        LearningPhase.TOPIC_SELECTION -> LearningPhase.ASSESSMENT
-        LearningPhase.ASSESSMENT -> LearningPhase.ADAPTIVE_LEARNING
-        LearningPhase.ADAPTIVE_LEARNING -> LearningPhase.REINFORCEMENT
-        LearningPhase.REINFORCEMENT -> LearningPhase.EVALUATION
-        LearningPhase.EVALUATION -> LearningPhase.ONBOARDING
-      }
-      state.copy(currentPhase = next)
+    private fun initializeUser() {
+        val profile = userDataManager.updateLoginInfo()
+        _uiState.update {
+            it.copy(
+                userProfile = profile,
+                step = if (userDataManager.isUserRegistered()) 0 else 1,
+                languageInput = profile.language,
+                nameInput = profile.name,
+                favoriteTopicInput = profile.favoriteTopic,
+                motivationInput = profile.motivation
+            )
+        }
     }
-  }
+
+    fun updateStep(newStep: Int) {
+        _uiState.update { it.copy(step = newStep) }
+    }
+
+    fun updateLanguage(input: String) {
+        _uiState.update { it.copy(languageInput = input) }
+    }
+
+    fun updateName(input: String) {
+        _uiState.update { it.copy(nameInput = input) }
+    }
+
+    fun updateFavoriteTopic(input: String) {
+        _uiState.update { it.copy(favoriteTopicInput = input) }
+    }
+
+    fun updateMotivation(input: String) {
+        _uiState.update { it.copy(motivationInput = input) }
+    }
+
+    fun updateActivity(activity: String) {
+        _uiState.update { it.copy(chosenActivity = activity) }
+    }
+
+    fun updateCustomProject(name: String) {
+        _uiState.update { it.copy(customProjectName = name) }
+    }
+
+    fun saveUserProfile() {
+        val state = _uiState.value
+        val profile = state.userProfile.copy(
+            language = state.languageInput.trim(),
+            name = state.nameInput.trim(),
+            favoriteTopic = state.favoriteTopicInput.trim(),
+            motivation = state.motivationInput.trim()
+        )
+        userDataManager.saveUserProfile(profile)
+        _uiState.update { it.copy(userProfile = profile) }
+    }
+
+    fun resetProfile() {
+        userDataManager.clearUserData()
+        _uiState.update {
+            InteractiveLearningUiState(step = 1)
+        }
+    }
+
+    fun setSolarScore(score: Int) {
+        val profile = _uiState.value.userProfile.copy(solarScore = score)
+        userDataManager.saveUserProfile(profile)
+        _uiState.update { it.copy(userProfile = profile) }
+    }
+
+    fun setWindScore(score: Int) {
+        val profile = _uiState.value.userProfile.copy(windEnergyScore = score)
+        userDataManager.saveUserProfile(profile)
+        _uiState.update { it.copy(userProfile = profile) }
+    }
+
+    fun setCustomProjectScore(score: Int) {
+        val profile = _uiState.value.userProfile.copy(customProjectScore = score)
+        userDataManager.saveUserProfile(profile)
+        _uiState.update { it.copy(userProfile = profile) }
+    }
 }
