@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.ai.edge.gallery.customtasks.examplecustomtask
+package com.google.ai.edge.gallery.customtasks.interactivelearning
 
 import com.google.ai.edge.gallery.customtasks.common.CustomTask
 import dagger.Module
@@ -24,18 +24,18 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 
 /**
- * A Hilt module that provides the `ExampleCustomTask` implementation.
+ * Hilt module that provides the Interactive Learning task implementation.
  *
- * This module is crucial for integrating your custom task into the application's plugin system. By
- * using `@Provides` and `@IntoSet`, you are telling Hilt to add an instance of `ExampleCustomTask`
- * to a `Set<CustomTask>`, which the main app will use to discover all available custom tasks
- * without needing to know about each one individually.
+ * This module registers the InteractiveLearning custom task with the application's
+ * dependency injection system, making it discoverable by the main app.
  */
 @Module
-@InstallIn(SingletonComponent::class) // Or another component that fits your scope
-internal object InteractiveLearningModule  {
-  @Provides
-  @IntoSet
-  fun provideInteractiveLearningTask(task: InteractiveLearningFirstTask): CustomTask = task
-  
+@InstallIn(SingletonComponent::class)
+object InteractiveLearningModule{
+
+    @Provides
+    @IntoSet
+    fun provideInteractiveLearning(): CustomTask {
+        return InteractiveLearning()
+    }
 }
