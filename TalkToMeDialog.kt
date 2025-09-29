@@ -40,7 +40,7 @@ fun TalkToMeDialog(
                 .fillMaxHeight(0.9f)
                 .padding(8.dp)
         ) {
-            // Use Scaffold so the app bar and content are placed in a valid composable scope
+            
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -61,7 +61,7 @@ fun TalkToMeDialog(
                         .fillMaxSize()
                         .padding(innerPadding)
                 ) {
-                    // Tabs
+                    
                     val tabs = listOf(TalkToMeTab.Chat, TalkToMeTab.Image, TalkToMeTab.Audio)
                     TabRow(selectedTabIndex = tabs.indexOf(selectedTab)) {
                         tabs.forEach { tab ->
@@ -81,7 +81,7 @@ fun TalkToMeDialog(
                         }
                     }
 
-                    // Content
+                    
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -91,7 +91,7 @@ fun TalkToMeDialog(
                         Crossfade(targetState = selectedTab, label = "talkToMeTab") { tab ->
                             when (tab) {
                                 TalkToMeTab.Chat -> {
-                                    // Reuse existing Chat implementation
+                                    // Reuse existing Chat 
                                     LlmChatScreen(
                                         modelManagerViewModel = modelManagerViewModel,
                                         navigateUp = onDismissRequest,
@@ -99,7 +99,7 @@ fun TalkToMeDialog(
                                     )
                                 }
                                 TalkToMeTab.Image -> {
-                                    // Reuse existing Ask Image implementation
+                                    // Reuse existing Ask Image 
                                     LlmAskImageScreen(
                                         modelManagerViewModel = modelManagerViewModel,
                                         navigateUp = onDismissRequest,
@@ -107,7 +107,7 @@ fun TalkToMeDialog(
                                     )
                                 }
                                 TalkToMeTab.Audio -> {
-                                    // Reuse existing Ask Audio implementation
+                                    // Reuse existing Ask Audio 
                                     LlmAskAudioScreen(
                                         modelManagerViewModel = modelManagerViewModel,
                                         navigateUp = onDismissRequest,
