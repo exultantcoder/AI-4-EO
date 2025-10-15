@@ -20,7 +20,8 @@ That’s why we built an **personalized interactive learning module**, powered b
 - **An offline personalized learning platform that adapts to the user's language and interests specially for those in children in underserved areas.**
 - **TalkToMe option enable the user to chat with the model via image, text and audio , all-in-one tab.**
 - **Better user data management and track of user's progress while learning modules.**
-- **Adaptive feedback loop to train the model based on user's preferences to adapt to the user.** 
+- **Adaptive feedback loop to train the model based on user's preferences to adapt to the user.**
+- **Interactive Scientific games for technical knowledge and making learning enjoyable.**
 
 Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.  
 
