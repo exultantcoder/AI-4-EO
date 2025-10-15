@@ -1,7 +1,7 @@
 # 🌍 Interactive offline AI Tutor: Gemma 3N on Google AI Edge
 
 **No internet. No limits. AI for everyone, everywhere.**
-
+This project was submitted to the Gemma3N Impact challenge on Kaggle. 
 ---
 
 ## 📖 Project Vision
