@@ -46,3 +46,5 @@ Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.
 # Workflow :
 1. Clone the Google AI edge gallery github repo
 2. Add these interactive learning task files under the custom task folder and run the interactive module.
+
+Google AI Edge Gallery. (2025). An open-source Android application for running AI models locally on edge devices. Google AI Edge. Retrieved October 15, 2025, from https://github.com/google-ai-edge/gallery
