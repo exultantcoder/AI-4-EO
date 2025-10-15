@@ -202,6 +202,30 @@ fun InteractiveLearningScreen(
                 modifier = Modifier.fillMaxSize()
             )
         }
+            500 -> {
+                // Show a back button to go to activity selection
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Button(
+                        onClick = { viewModel.updateStep(8) },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text("← Back to Activities")
+                    }
+                    SolarAngleOptimizerGame()
+                }
+            }
+            600 -> {
+                // Show a back button to go to activity selection
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Button(
+                        onClick = { viewModel.updateStep(8) },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text("← Back to Activities")
+                    }
+                    WindAlignmentGame()
+                }
+            }
         }
     }
 }
