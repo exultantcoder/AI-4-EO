@@ -24,6 +24,11 @@ That’s why we built an **personalized interactive learning module**, powered b
 - **Interactive Scientific games for technical knowledge and making learning enjoyable.**
 
 Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.  
+---<img width="1024" height="768" alt="1" src="https://github.com/user-attachments/assets/2fef13ff-5264-4f19-b321-3bf1e49e0a88" />
+<img width="1024" height="768" alt="2" src="https://github.com/user-attachments/assets/d5ea7f8c-d25f-4d7b-b6fc-819d9bf5a608" />
+<img width="1024" height="768" alt="3" src="https://github.com/user-attachments/assets/f76642ee-9df1-4487-9dac-5f772269c86c" />
+<img width="1024" height="768" alt="2" src="https://github.com/user-attachments/assets/d953be33-87f0-48e2-a6da-ae1d34d909e0" />
+<img width="1024" height="768" alt="1" src="https://github.com/user-attachments/assets/7406eb75-88f3-468f-9088-d2f8c2a8c058" />
 
 ---
 
@@ -36,7 +41,7 @@ Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.
 - **Partner with NGOs** to bring this system to classrooms worldwide.  
 - **Preloaded essential learning modules (STEM, environment, health, ethics).    
 
----
+
 
 # Workflow :
 1. Clone the Google AI edge gallery github repo
