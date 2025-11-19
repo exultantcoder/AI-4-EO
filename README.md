@@ -47,4 +47,27 @@ Instead of asking kids to adapt to the AI, we made the AI **adapt to them**.
 1. Clone the Google AI edge gallery github repo
 2. Add these interactive learning task files under the custom task folder and run the interactive module.
 
+# Performance Metrics - Raspberry Pi 5 Deployment
+This application is designed for deployment on single-board computers to enable scalable, cost-effective distribution of on-device AI capabilities. For this evaluation, we deployed the Interactive Learning application on a Raspberry Pi 5 (4GB RAM), a compact single-board computer suitable for mass deployment in educational environments, particularly in underserved regions requiring free access to quality learning resources.
+
+# Deployment Methodology
+
+1. The Android application was installed on the Raspberry Pi 5 by flashing Android OS (LineageOS 22) onto a 128GB microSD card. Another attempt was to use the waydroid The deployment process involved:
+
+2. Flashing the Android OS image to the microSD card
+
+3. Booting the Raspberry Pi 5 with Android OS
+
+4. Installing the application APK (app-debug.apk)
+
+5. Downloading the Gemma 3N-E2B-it model from Hugging Face within the app
+
+*Technical Challenges Encountered* 
+
+During deployment, we encountered compatibility issues related to the 16KB page size alignment requirement introduced in newer Android versions. The original application was developed with the standard 4KB page alignment, causing runtime instability when attempting to collect performance metrics. As a result, direct in-app metric logging was not feasible.
+
+<img width="792" height="463" alt="Screenshot 2025-11-19 at 4 27 37 PM" src="https://github.com/user-attachments/assets/2902a629-bef9-4494-8234-5367f48cbf0b" />
+
+Note: These metrics represent estimated performance based on hardware specifications and empirical ARM CPU benchmarks. Direct measurement was limited due to 16KB alignment constraints in the Android build.
+
 Google AI Edge Gallery. (2025). An open-source Android application for running AI models locally on edge devices. Google AI Edge. Retrieved October 15, 2025, from https://github.com/google-ai-edge/gallery
