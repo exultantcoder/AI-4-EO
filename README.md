@@ -64,10 +64,10 @@ This application is designed for deployment on single-board computers to enable 
 
 *Technical Challenges Encountered* 
 
-During deployment, we encountered compatibility issues related to the 16KB page size alignment requirement introduced in newer Android versions. The original application was developed with the standard 4KB page alignment, causing runtime instability when attempting to collect performance metrics. As a result, direct in-app metric logging was not feasible.
+
 
 <img width="792" height="463" alt="Screenshot 2025-11-19 at 4 27 37 PM" src="https://github.com/user-attachments/assets/2902a629-bef9-4494-8234-5367f48cbf0b" />
 
-Note: These metrics represent estimated performance based on hardware specifications and empirical ARM CPU benchmarks. Direct measurement was limited due to 16KB alignment constraints in the Android build.
+Note: These metrics represent estimated performance based on hardware specifications and empirical ARM CPU benchmarks. 
 
 Google AI Edge Gallery. (2025). An open-source Android application for running AI models locally on edge devices. Google AI Edge. Retrieved October 15, 2025, from https://github.com/google-ai-edge/gallery
