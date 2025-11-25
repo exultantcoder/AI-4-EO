@@ -60,14 +60,12 @@ This application is designed for deployment on single-board computers to enable 
 
 4. Installing the application APK (app-debug.apk)
 
-5. Downloading the Gemma 3N-E2B-it model from Hugging Face within the app
+5. Downloading the Gemma 3N-E2B-it  model from Hugging Face within the app
 
-*Technical Challenges Encountered* 
+Metrics : The model running on a Raspberry Pi 5 with 4gb RAM 
+
+<img width="337" height="167" alt="Screenshot 2025-11-25 at 3 20 58 PM" src="https://github.com/user-attachments/assets/b5c1f8c2-3d23-421f-b4d6-69cb5523bf74" />
 
 
-
-<img width="792" height="463" alt="Screenshot 2025-11-19 at 4 27 37 PM" src="https://github.com/user-attachments/assets/2902a629-bef9-4494-8234-5367f48cbf0b" />
-
-Note: These metrics represent estimated performance based on hardware specifications and empirical ARM CPU benchmarks. 
 
 Google AI Edge Gallery. (2025). An open-source Android application for running AI models locally on edge devices. Google AI Edge. Retrieved October 15, 2025, from https://github.com/google-ai-edge/gallery
