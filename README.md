@@ -3,6 +3,7 @@
 **No internet. No limits. AI for everyone, everywhere.**
 This project was submitted to the Gemma3N Impact challenge on Kaggle. 
 ---
+APK Download : https://drive.google.com/file/d/1rE7Eze9OG4ArVRIgsow3k1kTtaXPJrl6/view?usp=sharing 
 
 ## 📖 Project Vision
 This project is about something very simple — and very powerful:  
